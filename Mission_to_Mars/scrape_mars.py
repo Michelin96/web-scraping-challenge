@@ -1,5 +1,4 @@
 # Dependencies
-import pandas as pd
 import lxml.html as lh
 from bs4 import BeautifulSoup as bs
 import requests
@@ -12,15 +11,17 @@ def init_browser():
     return Browser("chrome", **executable_path, headless=False)
 
 def scrape_info():
-    browser = init_browser()
 
     #Create a dictionary to load in mongo
     mars_data = {}
 
     #Put the feature image link in our mars data dictionary using the feature function
     feature_url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
-    mars_data['feature_image'] = feature(feature_url)
+    mars_data['feature'] = feature()
 
+    #Initialize browser for the news page
+    browser = init_browser()
+    
     #Retrieve the top news headline and snipit
     news_url = "https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest"
     response = requests.get(news_url)
@@ -42,16 +43,25 @@ def scrape_info():
     # Return results
     return mars_data
 
-def feature(feature_url):
-
+def feature():
+     #Initialize browser for the feature image page
+    browser = init_browser()
+    feature_url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
     browser.visit(feature_url)
 
     #Click the full image button to get to the image URL
     browser.links.find_by_partial_text('FULL').click()
-
+    time.sleep(3)
     # Create a Beautiful Soup object
     soup = bs(browser.html, 'html.parser')
 
-    featured_image_url = "https://www.jpl.nasa.gov" + soup.find_all('img', class_='fancybox-image')[0]["src"]
+    #Get the URL of the full image
+    relative_image_url = soup.find_all('img', class_='fancybox-image')[0]['src']
+
+    #Create the full URL
+    featured_image_url = 'https://www.jpl.nasa.gov' + relative_image_url
+
+    # Close the browser after scraping
+    browser.quit()
 
     return featured_image_url
