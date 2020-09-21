@@ -19,6 +19,9 @@ def scrape_info():
     feature_url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
     marsmission['feature'] = feature()
 
+    #Run the funciion to get the list of key vaues for the hemisphere name and image url
+    marsmission['hemispheres'] = hemispheres()
+
     #Initialize browser for the news page
     browser = init_browser()
     
@@ -37,8 +40,6 @@ def scrape_info():
     news_snipit = soup.find('div', class_="rollover_description_inner").text
     marsmission['snipit'] = news_snipit
 
-    #Run the funciion to get the list of key vaues for the hemisphere name and image url
-    marsmission['hemispheres'] = hemispheres()
     # Close the browser after scraping
     browser.quit()
 
