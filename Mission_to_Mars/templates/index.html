@@ -117,12 +117,14 @@
                 <div class="row">
                     {% for item in marsinfo.hemispheres %}
                     <div class="col-md-6">
-                        <div class="card">
-                            <h3 class="card-header">
-                                {{ item.title }}
-                            </h3>
-                            <div class="card-body">
-                                <img src="{{item.image_url}}" class="card-img-top" alt="Image of the {{item.title}}" width="75%" height="75%">
+                        <div class="card-deck">
+                            <div class="card">
+                                <h3 class="card-header">
+                                    {{ item.title }}
+                                </h3>
+                                <div class="card-body">
+                                    <img src="{{item.image_url}}" class="card-img-top" alt="Image of the {{item.title}}" width="75%" height="75%">
+                                </div>
                             </div>
                         </div>
                     </div>
