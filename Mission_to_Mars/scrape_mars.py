@@ -13,11 +13,11 @@ def init_browser():
 def scrape_info():
 
     #Create a dictionary to load in mongo
-    mars_data = {}
+    marsmission = {}
 
     #Put the feature image link in our mars data dictionary using the feature function
     feature_url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
-    mars_data['feature'] = feature()
+    marsmission['feature'] = feature()
 
     #Initialize browser for the news page
     browser = init_browser()
@@ -31,20 +31,22 @@ def scrape_info():
     
     # Put the news title in our mars data dictionary
     news_title = soup.find('div', class_="content_title").text
-    mars_data['headline'] = news_title
+    marsmission['headline'] = news_title
 
     # Put the news snipit in our mars data dictionary
     news_snipit = soup.find('div', class_="rollover_description_inner").text
-    mars_data['snipit'] = news_snipit
+    marsmission['snipit'] = news_snipit
 
+    #Run the funciion to get the list of key vaues for the hemisphere name and image url
+    marsmission['hemispheres'] = hemispheres()
     # Close the browser after scraping
     browser.quit()
 
     # Return results
-    return mars_data
+    return marsmission
 
 def feature():
-     #Initialize browser for the feature image page
+    #Initialize browser for the feature image page
     browser = init_browser()
     feature_url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
     browser.visit(feature_url)
@@ -65,3 +67,40 @@ def feature():
     browser.quit()
 
     return featured_image_url
+
+def hemispheres():
+     
+    browser = init_browser()
+    # URL of page to be scraped
+    images_url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+
+    names = []
+    urls = []
+
+    #Cycle through hemisphere image list and collect the names and image links
+    for item in range(4):
+        browser.visit(images_url)
+
+        #Wait for the page to load
+        time.sleep(5)
+        browser.links.find_by_partial_text('Hemisphere')[item].click()
+
+        # Create a Beautiful Soup object
+        soup = bs(browser.html, 'html.parser')
+    
+        #Get the name of the hemisphere
+        title = soup.find('h2', class_='title')
+        name = title.text.strip()
+        names.append(name)
+    
+        #Get the URL of the full size hemisphere image
+        url = 'https://astrogeology.usgs.gov'+ soup.find('img', class_='wide-image')['src']
+        urls.append(url)
+
+    #Making the name and URL dictionary using list comprehension
+    hemispheres = [ {'title': names[item], 'image_url': urls[item] } for item in range(len(urls)) ]
+
+    # Close the browser after scraping
+    browser.quit()
+
+    return hemispheres

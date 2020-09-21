@@ -12,56 +12,121 @@
         <div class="container-fluid">
             <div class="jumbotron text-center">
                 <h1>Mission to Mars</h1>
+                <h2></h2>
                 <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Get Current Info</a></p>
             </div>
             <div class="row">
                 <div class="col-md-12">
+                {% if marsinfo %}
                     <h2>Top Red Planet Report</h2>
-                    <!--News headline and tag goes here-->
-                    <h3>{{ top_news_headline }}</h3>
-                    <p>{{ top_news_brief }}</p>
-                    
-                    {% if vacation %}
-                    <img src="{{ vacation.sloth_img }}" alt="Sloth">
-                    <h2>The typical weather in Costa Rica is:</h2>
-                    <h3>Max Temp: {{ vacation.max_temp }}</h3>
-                    <h3>Min Temp: {{ vacation.min_temp }}</h3>
-                    {% endif %}
+                    <!--News headline and tag imported from mongo database-->
+                    <h3>{{ marsinfo.headline }}</h3>
+                    <p>{{ marsinfo.snipit }}</p>
+                {% endif %}
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-8">
+                    <h2>Featured Space Mission Photo</h2>
                     <!--Feature image goes here-->
-                    <img src="{{ mars_data.feature_img }}" alt="Featured Image of Missions to Mars">
+                    <img src="{{ marsinfo.feature }}" alt="Featured Image of Space Missions" width="90%" height="90%">
                 </div>
-                <div class="col-md-4">
                     <!--Facts table goes here-->
-                    <table>Mars Facts</table>
+                <div class="col-md-4">
+                        <h2>Mars Fact Sheet</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Product
+                                </th>
+                                <th>
+                                    Payment Taken
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                
+                                <td>
+                                    TB - Monthly
+                                </td>
+                                <td>
+                                    01/04/2012
+                                </td>
+                                
+                            </tr>
+                            <tr>
+                                
+                                <td>
+                                    TB - Monthly
+                                </td>
+                                <td>
+                                    01/04/2012
+                                </td>
+                               
+                            </tr>
+                            <tr >
+                              
+                                <td>
+                                    TB - Monthly
+                                </td>
+                                <td>
+                                    02/04/2012
+                                </td>
+                               
+                            </tr>
+                            <tr>
+                        
+                                <td>
+                                    TB - Monthly
+                                </td>
+                                <td>
+                                    03/04/2012
+                                </td>
+        
+                            </tr>
+                            <tr>
+            
+                                <td>
+                                    TB - Monthly
+                                </td>
+                                <td>
+                                    04/04/2012
+                                </td>
+                               
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
             <!--Hemisphere Photos Grid-->   
             <div class="row">
                 <div class="col-md-12">
-                    <div class="jumbotron text-center">
-                        <h2>Hemisphere Phptos</h2>
+                    <div class="text-center">
+                        <hr>
+                        <h2>Hemisphere Photos</h2>
                         <hr>
                     </div>
                 </div>
             </div>   
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="Image1">
-                </div>
-                <div class="col-md-6">
-                    <img src="Image2">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="Image3">
-                </div>
-                <div class="col-md-6">
-                    <img src="Image4">
+
+            <!--Put the photos in a for loop-->
+            <div class="container-fluid">
+                <div class="row">
+                    {% for item in marsinfo.hemispheres %}
+                    <div class="col-md-6">
+                        <div class="card">
+                            <h3 class="card-header">
+                                {{ item.title }}
+                            </h3>
+                            <div class="card-body">
+                                <img src="{{item.image_url}}" class="card-img-top" alt="Image of the {{item.title}}" width="75%" height="75%">
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
