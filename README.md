@@ -10,7 +10,7 @@ def init_browser():
     executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
     return Browser("chrome", **executable_path, headless=False)
     
-* Scraped data is stored in a Mongo Database. You will need to have MongoDB inslalled, and the database running. Additionaly scraping tools include Beautiful Soup and Splinter.
+* Scraped data is stored in a Mongo Database. You will need to have MongoDB installed, and the database running. Additionaly scraping tools include Beautiful Soup and Splinter.
 
 * Initial webscraping was tested in a Jupyter Notebook file. 
 
