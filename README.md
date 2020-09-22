@@ -17,4 +17,4 @@ def init_browser():
 ## Scraping and Display
 
 * Run app.py in a Python environment that has the additional dependancies installed
-* Sample screen shots of the rendered web page are in the this repository root folder. 
+* Sample screen shots of the rendered web page and all files are in the Mission_to_Mars repository folder. 
